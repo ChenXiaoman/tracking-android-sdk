@@ -2,21 +2,15 @@ package com.visenze.usertrackingsdk;
 
 import android.content.Context;
 import android.net.Uri;
-import android.util.Base64;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.net.CookieHandler;
 import java.net.CookieManager;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -24,7 +18,6 @@ public class HttpInstance {
     /**
      * HTTP CONSTANT for Multipart Entity Uploading
      */
-    public static final int TIME_OUT_FOR_UPLOAD = 10000;
     public static final int TIME_OUT_FOR_ID = 5000;
 
     /**
@@ -36,14 +29,6 @@ public class HttpInstance {
      * application context
      */
     private static Context          mContext;
-
-    /**
-     * api access key and secret key
-     */
-    private String                  accessKey;
-    private String                  secretKey;
-
-    private String                  userAgent;
 
     /**
      * request queue
@@ -75,15 +60,6 @@ public class HttpInstance {
         }
 
         return mInstance;
-    }
-
-    public void setKeys(String accessKey, String secretKey) {
-        this.accessKey = accessKey;
-        this.secretKey = secretKey;
-    }
-
-    public void setUserAgent(String userAgent) {
-        this.userAgent = userAgent;
     }
 
     /**
@@ -132,20 +108,6 @@ public class HttpInstance {
         jsonObjectRequest.setTag(mContext);
         getRequestQueue().add(jsonObjectRequest);
 
-    }
-
-    private Map<String, String> getAuthHeader() {
-        Map<String, String> params = new HashMap<>();
-        if (secretKey != null) {
-            String creds = String.format("%s:%s", accessKey, secretKey);
-            String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.NO_WRAP);
-            params.put("Authorization", auth);
-        }
-
-        //add request header
-        params.put("X-Requested-With", userAgent);
-
-        return params;
     }
 }
 

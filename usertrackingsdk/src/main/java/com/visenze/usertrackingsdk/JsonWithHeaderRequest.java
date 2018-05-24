@@ -55,11 +55,6 @@ public class JsonWithHeaderRequest extends JsonObjectRequest {
 
             JSONObject result = new JSONObject(jsonString);
 
-            if (headers.containsKey("X-Log-ID")) {
-                String transId = (String)headers.get("X-Log-ID");
-                result.put("transId", transId);
-            }
-
             return Response.success(result,
                     HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {

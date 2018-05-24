@@ -1,6 +1,7 @@
 package com.visenze.usertrackingsdk;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  Parameters you want to track in a user event
@@ -8,12 +9,11 @@ import java.util.HashMap;
 public class TrackingParams {
     private String action;
     private String requestId;
-    private String cid;
     private String cuid;
 
     // The mapping of customized tracking parameters
     // and their corresponding value
-    private HashMap<String, String> customParams;
+    private Map<String, String> customParams;
 
     /**
      * Setup the compulsory tracking parameters
@@ -21,13 +21,11 @@ public class TrackingParams {
      *               e.g. "add-to-wish-list", "view", "click"
      * @param requestId The request id of the current search provided
      *                  by ViSenze search service
-     * @param cid An identify assigned by visenze for each e-commerce provider
-     *            e.g. app key
      */
-    public TrackingParams(String action, String requestId, String cid) {
+    public TrackingParams(String action, String requestId) {
         this.action = action;
         this.requestId = requestId;
-        this.cid = cid;
+        customParams = new HashMap<String, String>();
     }
 
     /**
@@ -43,7 +41,34 @@ public class TrackingParams {
      * and their corresponding value
      * @param customParams
      */
-    public void setCustomParams(HashMap<String, String> customParams) {
+    public void setCustomParams(Map<String, String> customParams) {
         this.customParams = customParams;
+    }
+
+    /**
+     * Transform the TrackingParams object to a key value pair
+     * containing all the specified parameters and their corresponding value
+     * @param accessKey
+     * @return a mapping represents all the parameters
+     */
+    public Map<String, String> toMap(String accessKey) {
+        Map<String, String> map = new HashMap<>();
+        map.put("cid", accessKey);
+
+        if (cuid != null) {
+            map.put("cuid", cuid);
+        }
+
+        if (requestId != null) {
+            map.put("reqid", requestId);
+        }
+
+        if (action != null) {
+            map.put("action", action);
+        }
+
+        map.putAll(customParams);
+
+        return map;
     }
 }
