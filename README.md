@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         String requestId = "Your_requestid";
         TrackingParams trackingParams = new TrackingParams(action, requestId);
 
-        // User UserEventTracker to track this action
+        // Use UserEventTracker to track this action
         userEventTracker.track(trackingParams);
     }
 }
@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
 ## Note to developer: 
 ### User permission
-- You need to add one permission `<uses-permission android:name="android.permission.INTERNET" />` to the file AndroidManifest.xml in order use this SDK
+- You need to add permission `<uses-permission android:name="android.permission.INTERNET" />` to the file AndroidManifest.xml in order use this SDK
 
 ### Class `TrackingParams`
 - You can add custom parameters for tracking. 
@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         // Create new custom parameters
         HashMap<String, String> customParams = new HashMap<>();
         customParams.put("Your_custom_parameter", "Value ");
+        
         // Add the custom parameter
         TrackingParams trackingParams = new TrackingParams(action, requestId, customParams);
 
