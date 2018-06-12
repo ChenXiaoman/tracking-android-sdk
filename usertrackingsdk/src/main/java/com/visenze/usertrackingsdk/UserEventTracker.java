@@ -13,6 +13,8 @@ public class UserEventTracker {
      */
     private HttpInstance httpInstance;
 
+    private String endPoint = "http://track.visenze.com/__aq.gif";
+
     /**
      * Create a user event tracker
      * @param context
@@ -21,12 +23,26 @@ public class UserEventTracker {
      */
     public UserEventTracker(Context context, String accessKey) {
         this.accessKey = accessKey;
-        httpInstance = HttpInstance.getInstance(context.getApplicationContext());
+        this.httpInstance = HttpInstance.getInstance(context.getApplicationContext());
+        UIDManager.initUIDManager(context);
+    }
+
+    /**
+     * Create a user event tracker
+     * @param context
+     * @param accessKey An identify assigned by visenze for each e-commerce provider
+     *            e.g. app key
+     * @param endPoint The end point for receiving tracking statistics
+     */
+    public UserEventTracker(Context context, String accessKey, String endPoint) {
+        this.accessKey = accessKey;
+        this.httpInstance = HttpInstance.getInstance(context.getApplicationContext());
+        this.endPoint = endPoint;
         UIDManager.initUIDManager(context);
     }
 
     public void track(TrackingParams trackParams) {
-        httpInstance.addGetRequestToQueueWithoutResponse("http://track.visenze.com/__aq.gif", trackParams.toMap(accessKey));
+        httpInstance.addGetRequestToQueueWithoutResponse(endPoint, trackParams.toMap(accessKey));
     }
 }
 

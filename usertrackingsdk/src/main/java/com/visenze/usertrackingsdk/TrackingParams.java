@@ -29,6 +29,21 @@ public class TrackingParams {
     }
 
     /**
+     * Setup the compulsory tracking parameters
+     * @param action The action of the user event you want to track,
+     *               e.g. "add-to-wish-list", "view", "click"
+     * @param requestId The request id of the current search provided
+     *                  by ViSenze search service
+     * @param customParams The mapping of customized tracking parameters
+     *                  and their corresponding value
+     */
+    public TrackingParams(String action, String requestId, HashMap<String, String> customParams) {
+        this.action = action;
+        this.requestId = requestId;
+        this.customParams = customParams;
+    }
+
+    /**
      * Set the user ID generated from your platform, e.g. account ID of the user
      * @param cuid
      */
