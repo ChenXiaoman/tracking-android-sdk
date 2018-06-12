@@ -1,6 +1,7 @@
 package com.visenze.usertrackingsdk;
 
 
+import com.android.volley.Cache;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -34,33 +35,36 @@ public class JsonWithHeaderRequest extends JsonObjectRequest {
     @Override
     protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
         try {
-            String jsonString =
-                    new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-
-            Map headers = response.headers;
-            if (headers.containsKey("Set-Cookie")) {
-                String value = (String)headers.get("Set-Cookie");
-                String[] cv = value.split(";");
-                String[] uid = new String[0];
-                for (String v : cv) {
-                    if (v.startsWith("uid")) {
-                        uid = v.split("=");
-                        break;
-                    }
-                }
-                if (uid.length > 0) {
-                    UIDManager.updateUidFromCookie(uid[1]);
-                }
-            }
+            String parse = HttpHeaderParser.parseCharset(response.headers);
+            byte[] data = response.data;
+            String jsonString = new String(data, parse);
+            JsonWithHeaderRequest.customParseHeader(response);
 
             JSONObject result = new JSONObject(jsonString);
-
-            return Response.success(result,
-                    HttpHeaderParser.parseCacheHeaders(response));
+            Cache.Entry headerParse = HttpHeaderParser.parseCacheHeaders(response);
+            return Response.success(result, headerParse);
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
         } catch (JSONException je) {
             return Response.error(new ParseError(je));
+        }
+    }
+
+    private static void customParseHeader(NetworkResponse response) {
+        Map headers = response.headers;
+        if (headers.containsKey("Set-Cookie")) {
+            String value = (String)headers.get("Set-Cookie");
+            String[] cv = value.split(";");
+            String[] uid = new String[0];
+            for (String v : cv) {
+                if (v.startsWith("uid")) {
+                    uid = v.split("=");
+                    break;
+                }
+            }
+            if (uid.length > 0) {
+                UIDManager.updateUidFromCookie(uid[1]);
+            }
         }
     }
 }
