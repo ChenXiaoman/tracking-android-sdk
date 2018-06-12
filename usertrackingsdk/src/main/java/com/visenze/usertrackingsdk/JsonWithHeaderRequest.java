@@ -55,17 +55,22 @@ public class JsonWithHeaderRequest extends JsonObjectRequest {
         if (headers.containsKey("Set-Cookie")) {
             String value = (String)headers.get("Set-Cookie");
             String[] cv = value.split(";");
-            String[] uid = new String[0];
-            for (String v : cv) {
-                if (v.startsWith("uid")) {
-                    uid = v.split("=");
-                    break;
-                }
-            }
+            String[] uid = JsonWithHeaderRequest.parseUid(cv);
             if (uid.length > 0) {
                 UIDManager.updateUidFromCookie(uid[1]);
             }
         }
+    }
+
+    private static String[] parseUid(String[] cv) {
+        String[] uid = new String[0];
+        for (String v : cv) {
+            if (v.startsWith("uid")) {
+                uid = v.split("=");
+                break;
+            }
+        }
+        return uid;
     }
 }
 
