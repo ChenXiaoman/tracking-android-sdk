@@ -39,13 +39,19 @@ public class MainActivity extends AppCompatActivity {
   ```java
         // Create new custom parameters
         HashMap<String, String> customParams = new HashMap<>();
-        customParams.put("Your_custom_parameter", "Value ");
+        customParams.put("Your_custom_parameter", "Value");
         
         // Add the custom parameter
         TrackingParams trackingParams = new TrackingParams(action, requestId, customParams);
 
         userEventTracker.track(trackingParams);
   ```
+- You can also set the user ID generated from your platform (e.g. account ID of the user)  
+
+  For example:
+  ```java
+        trackingParams.setCuid("Your_cuid");
+  ```  
 - Don't include space in the name of the key for you custom tracking parameters in `TrackingParams` class. 
 
 ### Class `UserEventTracker`
