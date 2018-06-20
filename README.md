@@ -14,9 +14,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         // Initialize a new UserEventTracker object with a mapping
-        // For ViSearch please use the key "cid" with value app key
-        // For UGC please use the key "campaign_id" with value campaign ID
         HashMap<String, String> map = new HashMap<>();
+        // map.put("cid", "xxx"); For ViSearch please use the key "cid" with value app key
+        // map.put("campaign_id", "xxx"); For UGC please use the key "campaign_id" with value campaign ID
         UserEventTracker userEventTracker = new UserEventTracker(this, map);
 
         // Wrap the information you want to track into a TrackingParams object

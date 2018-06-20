@@ -20,9 +20,12 @@ public class UserEventTracker {
     /**
      * Create a user event tracker
      * @param context
-     * @param map An init mapping
+     * @param map An init mapping and it must contain at least one mapping
      */
-    public UserEventTracker(Context context, HashMap<String, String> map) {
+    public UserEventTracker(Context context, HashMap<String, String> map) throws Exception {
+        if(map.size() < 1) {
+            throw new Exception("Invalid map");
+        }
         this.map = map;
         this.httpInstance = HttpInstance.getInstance(context.getApplicationContext());
         UIDManager.initUIDManager(context);
